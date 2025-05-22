@@ -4,7 +4,7 @@
 
 """Get latest version information from GitHub packages and repositories."""
 
-from typing import Dict, Literal, Optional
+from typing import Dict, Literal, Optional, Union
 
 from semver import Version
 from requests import get
@@ -52,7 +52,7 @@ def get_latest_version_from_package(  # pylint: disable=too-many-arguments
     )
     response.raise_for_status()
 
-    versions: Dict[str, str | Dict[str, str]] = response.json()
+    versions: Dict[str, Union[str, Dict[str, str]]] = response.json()
     for version in versions:
         try:
             semantic_version = Version.parse(clean_version(version["name"]))
@@ -102,7 +102,7 @@ def get_latest_version_from_releases(
     )
     response.raise_for_status()
 
-    releases: Dict[str, str | Dict[str, str]] = response.json()
+    releases: Dict[str, Union[str, Dict[str, str]]] = response.json()
     for release in releases:
         if release["draft"]:
             continue
@@ -157,7 +157,7 @@ def get_latest_version_from_tags(
     )
     response.raise_for_status()
 
-    tags: Dict[str, str | Dict[str, str]] = response.json()
+    tags: Dict[str, Union[str, Dict[str, str]]] = response.json()
     for tag in tags:
         try:
             semantic_version = Version.parse(clean_version(tag["name"]))
