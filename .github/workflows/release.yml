@@ -7,9 +7,11 @@ on:
     types: [published]
 permissions:
   contents: read
+  id-token: write
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: pypi
     steps:
     - uses: actions/checkout@v4
       name: Checkout Project
@@ -23,8 +25,5 @@ jobs:
         pip install build
     - name: Build
       run: python -m build
-    - name: Publish
+    - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
