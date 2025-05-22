@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: 2025 Joe Pitt
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+[project]
+name = "latest_version"
+description = "Python module to get the latest version for various package types."
+version = "1.0.0"
+readme = "README.md"
+requires-python = "~=3.8"
+license = "GPL-3.0-only"
+authors = [
+    {name = "Joe Pitt", email = "joe.pitt@joepitt.co.uk"},
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Software Development",
+  "Topic :: Software Development :: Build Tools",
+  "Topic :: Software Development :: Version Control",
+  "Typing :: Typed"
+]
+dependencies = [
+  "semver~=3.0.4",
+  "requests~=2.32.3",
+]
+
+[project.urls]
+Source = "https://github.com/joepitt91/latest_version"
+
+[build-system]
+requires = ["setuptools >= 61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-data]
+"pysynapse" = ["py.typed"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
