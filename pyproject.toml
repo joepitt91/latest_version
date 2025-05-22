@@ -5,7 +5,7 @@
 [project]
 name = "get_latest_version"
 description = "Python module to get the latest version for various package types."
-version = "1.0.0"
+version = "1.0.1"
 readme = "README.md"
 requires-python = "~=3.8"
 license = "GPL-3.0-only"
