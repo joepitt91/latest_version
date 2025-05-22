@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""Setup file for latest_version"""
+"""Setup file for get_latest_version"""
 
 from setuptools import setup
 

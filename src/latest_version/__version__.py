@@ -2,9 +2,9 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""Version information for latest_Version"""
+"""Version information for get_latest_version"""
 
-__title__ = "latest_version"
+__title__ = "get_latest_version"
 __description__ = "Python module to get the latest version for various package types."
 __author__ = "Joe Pitt"
 __copyright__ = "Copyright 2025, Joe Pitt"

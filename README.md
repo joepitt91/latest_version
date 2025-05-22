@@ -12,13 +12,13 @@ All package sources, except PyPI support passing a minimum and maximum version t
 ## Usage
 
 ```sh
-pip install latest_version
+pip install get_latest_version
 ```
 
 ### Digest of current `latest` Ubuntu image
 
 ```python
-from latest_version.dockerhub import get_current_image_digest
+from get_latest_version.dockerhub import get_current_image_digest
 
 print(get_current_image_digest(USERNAME, DOCKER_HUB_TOKEN, "ubuntu"))
 ```
@@ -26,7 +26,7 @@ print(get_current_image_digest(USERNAME, DOCKER_HUB_TOKEN, "ubuntu"))
 ### Latest available version of the Nextcloud AIO image
 
 ```python
-from latest_version.dockerhub import get_latest_image_version
+from get_latest_version.dockerhub import get_latest_image_version
 
 print(get_latest_image_version(USERNAME, DOCKER_HUB_TOKEN, "nextcloud"))
 ```
@@ -34,7 +34,7 @@ print(get_latest_image_version(USERNAME, DOCKER_HUB_TOKEN, "nextcloud"))
 ### Latest version of Matrix Authentication Service based on GitHub Container Registry versions
 
 ```python
-from latest_version.github import get_latest_version_from_package
+from get_latest_version.github import get_latest_version_from_package
 
 print(get_latest_version_from_package(GITHUB_PAT, "element-hq", "matrix-authentication-service"))
 ```
@@ -42,7 +42,7 @@ print(get_latest_version_from_package(GITHUB_PAT, "element-hq", "matrix-authenti
 ### Latest version of the ComfyUI based on GitHub releases
 
 ```python
-from latest_version.github import get_latest_version_from_releases
+from get_latest_version.github import get_latest_version_from_releases
 
 print(get_latest_version_from_releases(GITHUB_PAT, "comfyanonymous", "ComfyUI"))
 ```
@@ -50,7 +50,7 @@ print(get_latest_version_from_releases(GITHUB_PAT, "comfyanonymous", "ComfyUI"))
 ### Latest version of the ComfyUI based on GitHub tags
 
 ```python
-from latest_version.github import get_latest_version_from_tags
+from get_latest_version.github import get_latest_version_from_tags
 
 print(get_latest_version_from_tags(GITHUB_PAT, "comfyanonymous", "ComfyUI"))
 ```
@@ -58,7 +58,7 @@ print(get_latest_version_from_tags(GITHUB_PAT, "comfyanonymous", "ComfyUI"))
 ### Latest version of the requests from on PyPI
 
 ```python
-from latest_version.pypi import get_current_module_version
+from get_latest_version.pypi import get_current_module_version
 
 print(get_current_module_version("requests"))
 ```

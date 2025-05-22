@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 
 [project]
-name = "latest_version"
+name = "get_latest_version"
 description = "Python module to get the latest version for various package types."
 version = "1.0.0"
 readme = "README.md"

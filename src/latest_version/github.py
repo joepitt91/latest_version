@@ -9,6 +9,7 @@ from typing import Dict, Literal, Optional, Union
 from semver import Version
 from requests import get
 
+from .__version__ import __version__
 from .functions import clean_version, find_latest
 
 
@@ -47,7 +48,10 @@ def get_latest_version_from_package(  # pylint: disable=too-many-arguments
     semantic_versions: Dict[str, Version] = {}
     response = get(
         f"https://api.github.com/users/{owner}/packages/{package_type}/{package_name}/versions",
-        headers={"Authorization": f"Bearer {token}"},
+        headers={
+            "Authorization": f"Bearer {token}",
+            "User-Agent": f"Python get_latest_version/v{__version__}",
+        },
         timeout=10,
     )
     response.raise_for_status()
@@ -97,7 +101,10 @@ def get_latest_version_from_releases(
     semantic_versions: Dict[str, Version] = {}
     response = get(
         f"https://api.github.com/repos/{owner}/{repository}/releases",
-        headers={"Authorization": f"Bearer {token}"},
+        headers={
+            "Authorization": f"Bearer {token}",
+            "User-Agent": f"Python get_latest_version/v{__version__}",
+        },
         timeout=10,
     )
     response.raise_for_status()
@@ -152,7 +159,10 @@ def get_latest_version_from_tags(
     semantic_versions: Dict[str, Version] = {}
     response = get(
         f"https://api.github.com/repos/{owner}/{repository}/tags",
-        headers={"Authorization": f"Bearer {token}"},
+        headers={
+            "Authorization": f"Bearer {token}",
+            "User-Agent": f"Python get_latest_version/v{__version__}",
+        },
         timeout=10,
     )
     response.raise_for_status()

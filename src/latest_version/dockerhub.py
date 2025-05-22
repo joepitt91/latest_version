@@ -43,6 +43,10 @@ def get_docker_token(
             f"https://auth.docker.io/token?service=registry.docker.io&"
             f"scope=repository:{namespace}/{repository}:pull",
             auth=HTTPBasicAuth(username, token),
+            headers={
+                "Accept": "application/json",
+                "User-Agent": f"Python get_latest_version/v{__version__}",
+            },
             timeout=3,
         )
     elif scope == "hub":
@@ -91,8 +95,8 @@ def get_current_image_digest(  # pylint: disable=too-many-arguments
         f"https://registry-1.docker.io/v2/{namespace}/{repository}/manifests/{tag}",
         headers={
             "Accept": "application/json",
-            "User-Agent": f"Python latest_version/v{__version__}",
             "Authorization": f"Bearer {access_token}",
+            "User-Agent": f"Python get_latest_version/v{__version__}",
         },
         timeout=10,
     )
@@ -147,8 +151,8 @@ def get_latest_image_version(  # pylint: disable=too-many-arguments
             next_url,
             headers={
                 "Accept": "application/json",
-                "User-Agent": f"Python latest_version/v{__version__}",
                 "Authorization": f"Bearer {access_token}",
+                "User-Agent": f"Python get_latest_version/v{__version__}",
             },
             timeout=10,
         )

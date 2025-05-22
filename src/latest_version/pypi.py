@@ -6,6 +6,8 @@
 
 from requests import get
 
+from .__version__ import __version__
+
 
 def get_current_module_version(module: str) -> str:
     """Get the current version of the specified PIP module.
@@ -20,7 +22,14 @@ def get_current_module_version(module: str) -> str:
         str: The current version of the module.
     """
 
-    response = get(f"https://pypi.org/pypi/{module}/json", timeout=10)
+    response = get(
+        f"https://pypi.org/pypi/{module}/json",
+        headers={
+            "Accept": "application/json",
+            "User-Agent": f"Python get_latest_version/v{__version__}",
+        },
+        timeout=10,
+    )
     response.raise_for_status()
 
     return response.json()["info"]["version"]
