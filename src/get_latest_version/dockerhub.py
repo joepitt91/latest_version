@@ -127,9 +127,9 @@ def get_latest_image_version(  # pylint: disable=too-many-arguments
         token (str): The token to authenticate to the Docker Hub API with.
         repository (str): The repository to search tags for.
         namespace (str, optional): The namespace the repository is in. Defaults to "library".
-        minimum_version (Optional[Version], optional): A minimum version to accept.
+        minimum_version (Optional[Version], optional): The minimum version to accept.
                                                             Defaults to None.
-        maximum_version (Optional[Version], optional): A maximum version to accept.
+        maximum_version (Optional[Version], optional): The maximum version to accept.
                                                             Defaults to None.
 
     Raises:
