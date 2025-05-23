@@ -3,11 +3,21 @@ SPDX-FileCopyrightText: 2025 Joe Pitt
 
 SPDX-License-Identifier: GPL-3.0-only
 -->
-# Latest Version
+# Get Latest Version
 
 Python module to get the latest version for various package types.
 
 All package sources, except PyPI support passing a minimum and maximum version to constrain results.
+
+## GitHub Actions
+
+The functions in this module are also available through these GitHub Actions:
+
+* [DockerHub/Current Digest](https://github.com/joepitt91/action-digest-from-dockerhub-image)
+* [DockerHub/Latest Version](https://github.com/joepitt91/action-version-from-dockerhub)
+* [GitHub/Package Registry](https://github.com/joepitt91/action-version-from-github-package)
+* [GitHub/Releases](https://github.com/joepitt91/action-version-from-github-release)
+* [GitHub/Tags](https://github.com/joepitt91/action-version-from-github-tag)
 
 ## Usage
 

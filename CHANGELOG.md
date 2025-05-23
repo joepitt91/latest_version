@@ -5,6 +5,10 @@ SPDX-License-Identifier: GPL-3.0-only
 -->
 # Changelog
 
+## v1.0.3
+
+* docs: add references to GitHub Actions
+
 ## v1.0.2
 
 * fix: github container registry tag access
