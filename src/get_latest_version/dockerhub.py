@@ -47,13 +47,13 @@ def get_docker_token(
                 "Accept": "application/json",
                 "User-Agent": f"Python get_latest_version/v{__version__}",
             },
-            timeout=3,
+            timeout=30,
         )
     elif scope == "hub":
         response = post(
             "https://hub.docker.com/v2/auth/token",
             json={"identifier": username, "secret": token},
-            timeout=3,
+            timeout=30,
         )
     else:
         raise ValueError(f"Unknown scope {scope}")
@@ -98,7 +98,7 @@ def get_current_image_digest(  # pylint: disable=too-many-arguments
             "Authorization": f"Bearer {access_token}",
             "User-Agent": f"Python get_latest_version/v{__version__}",
         },
-        timeout=10,
+        timeout=30,
     )
     response.raise_for_status()
 
@@ -154,7 +154,7 @@ def get_latest_image_version(  # pylint: disable=too-many-arguments
                 "Authorization": f"Bearer {access_token}",
                 "User-Agent": f"Python get_latest_version/v{__version__}",
             },
-            timeout=10,
+            timeout=30,
         )
         response.raise_for_status()
 

@@ -56,7 +56,7 @@ def get_latest_version_from_package(  # pylint: disable=too-many-arguments
                 "Authorization": f"Bearer {token}",
                 "User-Agent": f"Python get_latest_version/v{__version__}",
             },
-            timeout=10,
+            timeout=30,
         )
         response.raise_for_status()
         versions: List[Dict[str, Any]] = response.json()
@@ -135,7 +135,7 @@ def get_latest_version_from_releases(
                 "Authorization": f"Bearer {token}",
                 "User-Agent": f"Python get_latest_version/v{__version__}",
             },
-            timeout=10,
+            timeout=30,
         )
         response.raise_for_status()
         releases: List[Dict[str, Any]] = response.json()
@@ -200,7 +200,7 @@ def get_latest_version_from_tags(
                 "Authorization": f"Bearer {token}",
                 "User-Agent": f"Python get_latest_version/v{__version__}",
             },
-            timeout=10,
+            timeout=30,
         )
         response.raise_for_status()
         tags: List[Dict[str, Any]] = response.json()

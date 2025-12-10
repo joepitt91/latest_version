@@ -28,7 +28,7 @@ def get_current_module_version(module: str) -> str:
             "Accept": "application/json",
             "User-Agent": f"Python get_latest_version/v{__version__}",
         },
-        timeout=10,
+        timeout=30,
     )
     response.raise_for_status()
 
