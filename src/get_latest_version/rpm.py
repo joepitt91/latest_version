@@ -41,12 +41,22 @@ def get_latest_from_rpm_repo(
 
     versions: Dict[str, Version] = {}
     mirror_urls: List[str] = (
-        get(mirror_list_url, timeout=30).content.decode("utf-8").split("\n")
+        get(
+            mirror_list_url,
+            headers={"User-Agent": f"Python get_latest_version/v{__version__}"},
+            timeout=30,
+        )
+        .content.decode("utf-8")
+        .split("\n")
     )
     for mirror in mirror_urls:
         try:
             for metadata in ElementTree.fromstring(
-                get(f"{mirror}repodata/repomd.xml", timeout=30).content.decode("utf-8")
+                get(
+                    f"{mirror}repodata/repomd.xml",
+                    headers={"User-Agent": f"Python get_latest_version/v{__version__}"},
+                    timeout=30,
+                ).content.decode("utf-8")
             ):
                 if (
                     "type" not in metadata.attrib
@@ -60,7 +70,11 @@ def get_latest_from_rpm_repo(
                         gzip_open(
                             BytesIO(
                                 get(
-                                    f"{mirror}{option.attrib['href']}", timeout=30
+                                    f"{mirror}{option.attrib['href']}",
+                                    headers={
+                                        "User-Agent": f"Python get_latest_version/v{__version__}"
+                                    },
+                                    timeout=30,
                                 ).content
                             )
                         )
