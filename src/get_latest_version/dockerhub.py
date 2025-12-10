@@ -117,8 +117,8 @@ def get_latest_image_version(  # pylint: disable=too-many-arguments
     repository: str,
     namespace: str = "library",
     *,
-    minimum_version: Optional[Version] = None,
-    maximum_version: Optional[Version] = None,
+    greater_equal_version: Optional[Version] = None,
+    less_than_version: Optional[Version] = None,
 ) -> str:
     """Get the latest semantic version number from a Docker Hub repository's tagged images.
 
@@ -127,10 +127,9 @@ def get_latest_image_version(  # pylint: disable=too-many-arguments
         token (str): The token to authenticate to the Docker Hub API with.
         repository (str): The repository to search tags for.
         namespace (str, optional): The namespace the repository is in. Defaults to "library".
-        minimum_version (Optional[Version], optional): The minimum version to accept.
-                                                            Defaults to None.
-        maximum_version (Optional[Version], optional): The maximum version to accept.
-                                                            Defaults to None.
+        greater_equal_version (Version, optional): The minimum version to accept. Defaults to None.
+        less_than_version (Version, optional): The version to accept versions less than.
+            Defaults to None.
 
     Raises:
         HTTPError: If communication with Docker Hub fails.
@@ -163,18 +162,17 @@ def get_latest_image_version(  # pylint: disable=too-many-arguments
             try:
                 semantic_version = Version.parse(clean_version(version["name"]))
                 if (
-                    semantic_version.prerelease is not None
-                    or (
-                        minimum_version is not None
-                        and semantic_version < minimum_version
+                    semantic_version.prerelease is None
+                    and (
+                        greater_equal_version is None
+                        or semantic_version >= greater_equal_version
                     )
-                    or (
-                        maximum_version is not None
-                        and semantic_version > maximum_version
+                    and (
+                        less_than_version is None
+                        or semantic_version < less_than_version
                     )
                 ):
-                    continue
-                semantic_versions[version["name"]] = semantic_version
+                    semantic_versions[version["name"]] = semantic_version
             except (TypeError, ValueError):
                 continue
         if versions["next"] is not None:

@@ -33,7 +33,7 @@ def get_latest_from_rpm_repo(
         package_arch (str, optional): The package architecture to check. Defaults to "x86_64".
         greater_equal_version (Version, optional): The minimum version to accept. Defaults to None.
         less_than_version (Version, optional): The version to accept versions less than.
-            Defaults to "x86_64".
+            Defaults to None.
 
     Returns:
         str: The latest rpm available in the repository.
