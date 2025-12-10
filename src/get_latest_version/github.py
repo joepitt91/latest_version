@@ -77,7 +77,6 @@ def get_latest_version_from_package(  # pylint: disable=too-many-arguments
                             or semantic_version < less_than_version
                         ):
                             semantic_versions[tag] = semantic_version
-                            semantic_versions[tag] = semantic_version
                     except (TypeError, ValueError):
                         continue
             else:
