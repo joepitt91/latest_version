@@ -14,7 +14,7 @@ from .__version__ import __version__
 from .functions import clean_version, find_latest
 
 
-def get_docker_token(
+def _get_docker_token(
     username: str,
     token: str,
     namespace: str,
@@ -90,7 +90,7 @@ def get_current_image_digest(  # pylint: disable=too-many-arguments
         str: The digest of the current image matching the search.
     """
 
-    access_token = get_docker_token(username, token, namespace, repository, "registry")
+    access_token = _get_docker_token(username, token, namespace, repository, "registry")
     response = get(
         f"https://registry-1.docker.io/v2/{namespace}/{repository}/manifests/{tag}",
         headers={
@@ -140,7 +140,7 @@ def get_latest_image_version(  # pylint: disable=too-many-arguments
         str: The image tag for the latest version.
     """
 
-    access_token = get_docker_token(username, token, namespace, repository, "hub")
+    access_token = _get_docker_token(username, token, namespace, repository, "hub")
     semantic_versions: Dict[str, Version] = {}
     next_url = (
         f"https://hub.docker.com/v2/namespaces/{namespace}/repositories/{repository}/tags?"
