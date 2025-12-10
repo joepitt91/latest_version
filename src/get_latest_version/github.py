@@ -154,7 +154,7 @@ def get_latest_version_from_releases(
                 greater_equal_version is None
                 or semantic_version >= greater_equal_version
             ) and (less_than_version is None or semantic_version < less_than_version):
-                semantic_versions[release["name"]] = semantic_version
+                semantic_versions[release["tag_name"]] = semantic_version
 
     return find_latest(semantic_versions)
 
