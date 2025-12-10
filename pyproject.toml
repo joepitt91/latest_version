@@ -7,7 +7,7 @@ name = "get_latest_version"
 description = "Python module to get the latest version for various package types."
 version = "2.0.0"
 readme = "README.md"
-requires-python = "~=3.8"
+requires-python = "~=3.9"
 license = "GPL-3.0-only"
 authors = [
     {name = "Joe Pitt", email = "joe.pitt@joepitt.co.uk"},
