@@ -10,11 +10,11 @@ from requests import get, post
 from requests.auth import HTTPBasicAuth
 from semver import Version
 
-from .__version__ import __version__
+from . import __version__
 from .functions import clean_version, find_latest
 
 
-def get_docker_token(
+def _get_docker_token(
     username: str,
     token: str,
     namespace: str,
@@ -47,13 +47,13 @@ def get_docker_token(
                 "Accept": "application/json",
                 "User-Agent": f"Python get_latest_version/v{__version__}",
             },
-            timeout=3,
+            timeout=30,
         )
     elif scope == "hub":
         response = post(
             "https://hub.docker.com/v2/auth/token",
             json={"identifier": username, "secret": token},
-            timeout=3,
+            timeout=30,
         )
     else:
         raise ValueError(f"Unknown scope {scope}")
@@ -90,7 +90,7 @@ def get_current_image_digest(  # pylint: disable=too-many-arguments
         str: The digest of the current image matching the search.
     """
 
-    access_token = get_docker_token(username, token, namespace, repository, "registry")
+    access_token = _get_docker_token(username, token, namespace, repository, "registry")
     response = get(
         f"https://registry-1.docker.io/v2/{namespace}/{repository}/manifests/{tag}",
         headers={
@@ -98,7 +98,7 @@ def get_current_image_digest(  # pylint: disable=too-many-arguments
             "Authorization": f"Bearer {access_token}",
             "User-Agent": f"Python get_latest_version/v{__version__}",
         },
-        timeout=10,
+        timeout=30,
     )
     response.raise_for_status()
 
@@ -117,8 +117,8 @@ def get_latest_image_version(  # pylint: disable=too-many-arguments
     repository: str,
     namespace: str = "library",
     *,
-    minimum_version: Optional[Version] = None,
-    maximum_version: Optional[Version] = None,
+    greater_equal_version: Optional[Version] = None,
+    less_than_version: Optional[Version] = None,
 ) -> str:
     """Get the latest semantic version number from a Docker Hub repository's tagged images.
 
@@ -127,10 +127,9 @@ def get_latest_image_version(  # pylint: disable=too-many-arguments
         token (str): The token to authenticate to the Docker Hub API with.
         repository (str): The repository to search tags for.
         namespace (str, optional): The namespace the repository is in. Defaults to "library".
-        minimum_version (Optional[Version], optional): The minimum version to accept.
-                                                            Defaults to None.
-        maximum_version (Optional[Version], optional): The maximum version to accept.
-                                                            Defaults to None.
+        greater_equal_version (Version, optional): The minimum version to accept. Defaults to None.
+        less_than_version (Version, optional): The version to accept versions less than.
+            Defaults to None.
 
     Raises:
         HTTPError: If communication with Docker Hub fails.
@@ -140,7 +139,7 @@ def get_latest_image_version(  # pylint: disable=too-many-arguments
         str: The image tag for the latest version.
     """
 
-    access_token = get_docker_token(username, token, namespace, repository, "hub")
+    access_token = _get_docker_token(username, token, namespace, repository, "hub")
     semantic_versions: Dict[str, Version] = {}
     next_url = (
         f"https://hub.docker.com/v2/namespaces/{namespace}/repositories/{repository}/tags?"
@@ -154,7 +153,7 @@ def get_latest_image_version(  # pylint: disable=too-many-arguments
                 "Authorization": f"Bearer {access_token}",
                 "User-Agent": f"Python get_latest_version/v{__version__}",
             },
-            timeout=10,
+            timeout=30,
         )
         response.raise_for_status()
 
@@ -163,18 +162,17 @@ def get_latest_image_version(  # pylint: disable=too-many-arguments
             try:
                 semantic_version = Version.parse(clean_version(version["name"]))
                 if (
-                    semantic_version.prerelease is not None
-                    or (
-                        minimum_version is not None
-                        and semantic_version < minimum_version
+                    semantic_version.prerelease is None
+                    and (
+                        greater_equal_version is None
+                        or semantic_version >= greater_equal_version
                     )
-                    or (
-                        maximum_version is not None
-                        and semantic_version > maximum_version
+                    and (
+                        less_than_version is None
+                        or semantic_version < less_than_version
                     )
                 ):
-                    continue
-                semantic_versions[version["name"]] = semantic_version
+                    semantic_versions[version["name"]] = semantic_version
             except (TypeError, ValueError):
                 continue
         if versions["next"] is not None:

@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Literal, Optional
 from semver import Version
 from requests import get
 
-from .__version__ import __version__
+from . import __version__
 from .functions import clean_version, find_latest
 
 
@@ -21,8 +21,8 @@ def get_latest_version_from_package(  # pylint: disable=too-many-arguments
         "npm", "maven", "rubygems", "docker", "nuget", "container"
     ] = "container",
     *,
-    minimum_version: Optional[Version] = None,
-    maximum_version: Optional[Version] = None,
+    greater_equal_version: Optional[Version] = None,
+    less_than_version: Optional[Version] = None,
 ) -> str:
     """Get the latest version from a GitHub package.
 
@@ -32,10 +32,9 @@ def get_latest_version_from_package(  # pylint: disable=too-many-arguments
         package_name (str): The name of the package to query.
         package_type (Literal[npm, maven, rubygems, docker, nuget, container ], optional):
             The type of package to query. Defaults to "container".
-        minimum_version (Optional[Version], optional): The minimum version to accept.
-                                                            Defaults to None.
-        maximum_version (Optional[Version], optional): The maximum version to accept.
-                                                            Defaults to None.
+        greater_equal_version (Version, optional): The minimum version to accept. Defaults to None.
+        less_than_version (Version, optional): The version to accept versions less than.
+            Defaults to None.
 
     Raises:
         HTTPError: If communication with GitHub fails.
@@ -56,7 +55,7 @@ def get_latest_version_from_package(  # pylint: disable=too-many-arguments
                 "Authorization": f"Bearer {token}",
                 "User-Agent": f"Python get_latest_version/v{__version__}",
             },
-            timeout=10,
+            timeout=30,
         )
         response.raise_for_status()
         versions: List[Dict[str, Any]] = response.json()
@@ -71,28 +70,26 @@ def get_latest_version_from_package(  # pylint: disable=too-many-arguments
                     try:
                         semantic_version = Version.parse(clean_version(tag))
                         if (
-                            minimum_version is not None
-                            and semantic_version < minimum_version
-                        ) or (
-                            maximum_version is not None
-                            and semantic_version > maximum_version
+                            greater_equal_version is None
+                            or semantic_version >= greater_equal_version
+                        ) and (
+                            less_than_version is None
+                            or semantic_version < less_than_version
                         ):
-                            continue
-                        semantic_versions[tag] = semantic_version
+                            semantic_versions[tag] = semantic_version
                     except (TypeError, ValueError):
                         continue
             else:
                 try:
                     semantic_version = Version.parse(clean_version(version["name"]))
                     if (
-                        minimum_version is not None
-                        and semantic_version < minimum_version
-                    ) or (
-                        maximum_version is not None
-                        and semantic_version > maximum_version
+                        greater_equal_version is None
+                        or semantic_version >= greater_equal_version
+                    ) and (
+                        less_than_version is None
+                        or semantic_version < less_than_version
                     ):
-                        continue
-                    semantic_versions[version["name"]] = semantic_version
+                        semantic_versions[version["name"]] = semantic_version
                 except (TypeError, ValueError):
                     continue
     return find_latest(semantic_versions)
@@ -103,8 +100,8 @@ def get_latest_version_from_releases(
     owner: str,
     repository: str,
     *,
-    minimum_version: Optional[Version] = None,
-    maximum_version: Optional[Version] = None,
+    greater_equal_version: Optional[Version] = None,
+    less_than_version: Optional[Version] = None,
 ) -> str:
     """Get the latest version from the releases in a GitHub repository.
 
@@ -112,10 +109,9 @@ def get_latest_version_from_releases(
         token (str): The token to authenticate to GitHub API with.
         owner (str): The owner of the source repository.
         repository (str): The name of the source repository.
-        minimum_version (Optional[Version], optional): The minimum version number to accept.
-                                                            Defaults to None.
-        maximum_version (Optional[Version], optional): The maximum version number to accept.
-                                                            Defaults to None.
+        greater_equal_version (Version, optional): The minimum version to accept. Defaults to None.
+        less_than_version (Version, optional): The version to accept versions less than.
+            Defaults to None.
 
     Raises:
         HTTPError: if communication with GitHub fails.
@@ -135,7 +131,7 @@ def get_latest_version_from_releases(
                 "Authorization": f"Bearer {token}",
                 "User-Agent": f"Python get_latest_version/v{__version__}",
             },
-            timeout=10,
+            timeout=30,
         )
         response.raise_for_status()
         releases: List[Dict[str, Any]] = response.json()
@@ -154,11 +150,11 @@ def get_latest_version_from_releases(
                     semantic_version = Version.parse(clean_version(release["tag_name"]))
                 except (TypeError, ValueError):
                     continue
-            if (minimum_version is not None and semantic_version < minimum_version) or (
-                maximum_version is not None and semantic_version > maximum_version
-            ):
-                continue
-            semantic_versions[release["name"]] = semantic_version
+            if (
+                greater_equal_version is None
+                or semantic_version >= greater_equal_version
+            ) and (less_than_version is None or semantic_version < less_than_version):
+                semantic_versions[release["tag_name"]] = semantic_version
 
     return find_latest(semantic_versions)
 
@@ -168,8 +164,8 @@ def get_latest_version_from_tags(
     owner: str,
     repository: str,
     *,
-    minimum_version: Optional[Version] = None,
-    maximum_version: Optional[Version] = None,
+    greater_equal_version: Optional[Version] = None,
+    less_than_version: Optional[Version] = None,
 ) -> str:
     """Get the latest version from the tags in a GitHub repository.
 
@@ -177,10 +173,9 @@ def get_latest_version_from_tags(
         token (str): The token to authenticate to GitHub API with.
         owner (str): The owner of the source repository.
         repository (str): The name of the source repository.
-        minimum_version (Optional[Version], optional): The minimum version number to accept.
-                                                            Defaults to None.
-        maximum_version (Optional[Version], optional): The maximum version number to accept.
-                                                            Defaults to None.
+        greater_equal_version (Version, optional): The minimum version to accept. Defaults to None.
+        less_than_version (Version, optional): The version to accept versions less than.
+            Defaults to None.
 
     Raises:
         HTTPError: if communication with GitHub fails.
@@ -200,7 +195,7 @@ def get_latest_version_from_tags(
                 "Authorization": f"Bearer {token}",
                 "User-Agent": f"Python get_latest_version/v{__version__}",
             },
-            timeout=10,
+            timeout=30,
         )
         response.raise_for_status()
         tags: List[Dict[str, Any]] = response.json()
@@ -213,12 +208,13 @@ def get_latest_version_from_tags(
             try:
                 semantic_version = Version.parse(clean_version(tag["name"]))
                 if (
-                    minimum_version is not None and semantic_version < minimum_version
-                ) or (
-                    maximum_version is not None and semantic_version > maximum_version
+                    greater_equal_version is None
+                    or semantic_version >= greater_equal_version
+                ) and (
+                    less_than_version is None
+                    or semantic_version < less_than_version
                 ):
-                    continue
-                semantic_versions[tag["name"]] = semantic_version
+                    semantic_versions[tag["name"]] = semantic_version
             except (TypeError, ValueError):
                 pass
 
