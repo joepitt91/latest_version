@@ -49,7 +49,7 @@ def get_latest_from_rpm_repo(
         .content.decode("utf-8")
         .split("\n")
     )
-    for mirror in mirror_urls:
+    for mirror in mirror_urls:  # pylint: disable=too-many-nested-blocks
         try:
             for metadata in ElementTree.fromstring(
                 get(
