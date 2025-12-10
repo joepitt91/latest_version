@@ -23,8 +23,6 @@ def get_latest_version_from_package(  # pylint: disable=too-many-arguments
     *,
     greater_equal_version: Optional[Version] = None,
     less_than_version: Optional[Version] = None,
-    greater_equal_version: Optional[Version] = None,
-    less_than_version: Optional[Version] = None,
 ) -> str:
     """Get the latest version from a GitHub package.
 
@@ -34,9 +32,6 @@ def get_latest_version_from_package(  # pylint: disable=too-many-arguments
         package_name (str): The name of the package to query.
         package_type (Literal[npm, maven, rubygems, docker, nuget, container ], optional):
             The type of package to query. Defaults to "container".
-        greater_equal_version (Version, optional): The minimum version to accept. Defaults to None.
-        less_than_version (Version, optional): The version to accept versions less than.
-            Defaults to None.
         greater_equal_version (Version, optional): The minimum version to accept. Defaults to None.
         less_than_version (Version, optional): The version to accept versions less than.
             Defaults to None.
@@ -80,11 +75,6 @@ def get_latest_version_from_package(  # pylint: disable=too-many-arguments
                         ) and (
                             less_than_version is None
                             or semantic_version < less_than_version
-                            greater_equal_version is None
-                            or semantic_version >= greater_equal_version
-                        ) and (
-                            less_than_version is None
-                            or semantic_version < less_than_version
                         ):
                             semantic_versions[tag] = semantic_version
                             semantic_versions[tag] = semantic_version
@@ -94,11 +84,6 @@ def get_latest_version_from_package(  # pylint: disable=too-many-arguments
                 try:
                     semantic_version = Version.parse(clean_version(version["name"]))
                     if (
-                        greater_equal_version is None
-                        or semantic_version >= greater_equal_version
-                    ) and (
-                        less_than_version is None
-                        or semantic_version < less_than_version
                         greater_equal_version is None
                         or semantic_version >= greater_equal_version
                     ) and (
@@ -119,8 +104,6 @@ def get_latest_version_from_releases(
     *,
     greater_equal_version: Optional[Version] = None,
     less_than_version: Optional[Version] = None,
-    greater_equal_version: Optional[Version] = None,
-    less_than_version: Optional[Version] = None,
 ) -> str:
     """Get the latest version from the releases in a GitHub repository.
 
@@ -128,9 +111,6 @@ def get_latest_version_from_releases(
         token (str): The token to authenticate to GitHub API with.
         owner (str): The owner of the source repository.
         repository (str): The name of the source repository.
-        greater_equal_version (Version, optional): The minimum version to accept. Defaults to None.
-        less_than_version (Version, optional): The version to accept versions less than.
-            Defaults to None.
         greater_equal_version (Version, optional): The minimum version to accept. Defaults to None.
         less_than_version (Version, optional): The version to accept versions less than.
             Defaults to None.
@@ -188,8 +168,6 @@ def get_latest_version_from_tags(
     *,
     greater_equal_version: Optional[Version] = None,
     less_than_version: Optional[Version] = None,
-    greater_equal_version: Optional[Version] = None,
-    less_than_version: Optional[Version] = None,
 ) -> str:
     """Get the latest version from the tags in a GitHub repository.
 
@@ -197,9 +175,6 @@ def get_latest_version_from_tags(
         token (str): The token to authenticate to GitHub API with.
         owner (str): The owner of the source repository.
         repository (str): The name of the source repository.
-        greater_equal_version (Version, optional): The minimum version to accept. Defaults to None.
-        less_than_version (Version, optional): The version to accept versions less than.
-            Defaults to None.
         greater_equal_version (Version, optional): The minimum version to accept. Defaults to None.
         less_than_version (Version, optional): The version to accept versions less than.
             Defaults to None.
@@ -235,11 +210,6 @@ def get_latest_version_from_tags(
             try:
                 semantic_version = Version.parse(clean_version(tag["name"]))
                 if (
-                    greater_equal_version is None
-                    or semantic_version >= greater_equal_version
-                ) and (
-                    less_than_version is None
-                    or semantic_version < less_than_version
                     greater_equal_version is None
                     or semantic_version >= greater_equal_version
                 ) and (
