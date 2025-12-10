@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Literal, Optional
 from semver import Version
 from requests import get
 
-from .__version__ import __version__
+from . import __version__
 from .functions import clean_version, find_latest
 
 

@@ -6,7 +6,7 @@
 
 from requests import get
 
-from .__version__ import __version__
+from . import __version__
 
 
 def get_current_module_version(module: str) -> str:

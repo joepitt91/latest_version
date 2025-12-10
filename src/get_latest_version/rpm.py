@@ -13,7 +13,7 @@ from defusedxml import ElementTree
 from requests import get, RequestException
 from semver import Version
 
-from .__version__ import __version__
+from . import __version__
 from .functions import clean_version, find_latest
 
 

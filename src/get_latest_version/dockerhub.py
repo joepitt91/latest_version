@@ -10,7 +10,7 @@ from requests import get, post
 from requests.auth import HTTPBasicAuth
 from semver import Version
 
-from .__version__ import __version__
+from . import __version__
 from .functions import clean_version, find_latest
 
 
