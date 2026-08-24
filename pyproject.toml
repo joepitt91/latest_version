@@ -24,16 +24,16 @@ classifiers = [
   "Typing :: Typed"
 ]
 dependencies = [
-  "defusedxml~=0.7.1",
-  "requests~=2.32.5",
-  "semver~=3.0.4"
+  "defusedxml~=0.7",
+  "requests~=2.34",
+  "semver~=3.0"
 ]
 
 [project.urls]
 Source = "https://github.com/joepitt91/latest_version"
 
 [build-system]
-requires = ["setuptools >= 61.0.0"]
+requires = ["setuptools >= 84.0.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.package-data]
