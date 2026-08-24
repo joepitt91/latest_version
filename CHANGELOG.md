@@ -7,6 +7,7 @@ SPDX-License-Identifier: GPL-3.0-only
 
 ## v2.0.1
 
+* fix: deprecate python 3.9 due to requests compatibility
 * chore: bump dependencies
 
 ## v2.0.0
