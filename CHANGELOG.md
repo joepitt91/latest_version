@@ -5,6 +5,10 @@ SPDX-License-Identifier: GPL-3.0-only
 -->
 # Changelog
 
+## v2.0.1
+
+* chore: bump dependencies
+
 ## v2.0.0
 
 * feat: added support for RPMs
