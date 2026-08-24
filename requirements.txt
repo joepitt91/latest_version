@@ -1,0 +1,3 @@
+defusedxml~=0.7
+requests~=2.34
+semver~=3.0
